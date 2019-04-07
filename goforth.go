@@ -134,7 +134,7 @@ func eval(env *environment, code string) {
 				error("Divide by zero.")
 				return
 			}
-			env.push(op1 / op2)
+			env.push(op2 / op1)
 		case "mod":
 			if len(env.stack) < 2 {
 				error("Stack underflow.")
@@ -146,7 +146,7 @@ func eval(env *environment, code string) {
 				error("Divide by zero.")
 				return
 			}
-			env.push(op1 % op2)
+			env.push(op2 % op1)
 		// Stack manipulation.
 		case "dup":
 			if len(env.stack) < 1 {
