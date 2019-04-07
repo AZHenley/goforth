@@ -31,8 +31,8 @@ The table below describes all of the built-in words. The stacks are shown bottom
 | swap | (1 2) -- (2 1)    | Swaps the top two elements. |
 | over      | (1 2) -- (1 2 1) | Duplicates the second element and puts it on top. |
 | rot     | (1 2 3) -- (2 3 1)  | Rotates the top three elements. |
-| cross      | (1)() -- () (1) | Pops the top element and pushes it to the secondary stack. |
-| back     | ()(1) -- (1)()  | Pops the top element of the second stack and pushes it to stack. |
+| cross      | (1) () -- () (1) | Pops the top element and pushes it to the secondary stack. |
+| back     | () (1) -- (1) ()  | Pops the top element of the second stack and pushes it to stack. |
 | + | (1 2) -- (3)  | Pops the top two elements and pushes the sum. |
 | - | (1 2) -- (-1)  | Pops the top two elements and pushes the difference. |
 | * | (1 2) -- (2)  | Pops the top two elements and pushes the product. |
