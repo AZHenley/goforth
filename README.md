@@ -9,10 +9,10 @@ Fibonacci sequence:
 
 Count down from 10:
 ```
-10 @ foo  (start at 10 and define label)
+10 @ lbl  (start at 10 and define label)
 dup . 10 emit  (print current value and newline)
 1 - dup if  (subtract 1 and check if not zero)
-goto then  (loop)
+lbl goto then  (loop)
 ```
 
 Duplicate the top 4 elements of the stack:
