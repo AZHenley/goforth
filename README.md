@@ -4,15 +4,15 @@ An interpreter for a small dialect of Forth written in Go.
 
 Fibonacci sequence:
 ```
-: fib over over + ;  (duplicates top two values and adds them)
+: fib over over + ;  ( duplicates top two values and adds them )
 ```
 
 Count down from 10:
 ```
-10 @ lbl  (start at 10 and define label)
-dup . 10 emit  (print current value and newline)
-1 - dup if  (subtract 1 and check if not zero)
-lbl goto then  (loop)
+10 @ lbl  ( start at 10 and define label )
+dup . 10 emit  ( print current value and newline )
+1 - dup if  ( subtract 1 and check if not zero )
+lbl goto then  ( loop )
 ```
 
 Duplicate the top 4 elements of the stack:
@@ -28,7 +28,7 @@ back back ;
 
 Similar to Forth, this is a stack-based language with space-separated commands called _words_. Most words manipulate the stack in some way. An integer is pushed to the top of the stack. Running `1 2 +` will push `3` to the stack.
 
-This dialect only supports integer values and does not have variables. Instead it has a second stack that you can push and pop from. Additionally, it supports labels and goto rather than loops. For comparisons, zero evaluates to false and any non-zero value evaluates to true. Referencing a label pushes an integer on the top of the stack where execution will continue. Words and labels must be unique.
+This dialect only supports integer values and does not have variables. Instead it has a second stack that you can push and pop from. Additionally, it supports labels and goto rather than loops. For comparisons, zero evaluates to false and any non-zero value evaluates to true. Referencing a label pushes an integer on the top of the stack where execution will continue. Words and labels must be unique. Comments beging with `(` and end with `)` with a space before and after each.
 
 The table below describes all of the built-in words. The stacks are shown bottom to top (i.e., the right most element is the top).
 
