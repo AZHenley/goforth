@@ -34,26 +34,26 @@ The table below describes all of the built-in words. The stacks are shown bottom
 
 | Word       | Stack effect          | Description |
 | ------------- |:-------------:| -----:|
-| dup      | (1) -- (1 1) | Duplicates the top element. |
-| drop     | (1) -- ()  | Pops the top element. |
-| swap | (1 2) -- (2 1)    | Swaps the top two elements. |
-| over      | (1 2) -- (1 2 1) | Duplicates the second element and puts it on top. |
-| rot     | (1 2 3) -- (2 3 1)  | Rotates the top three elements. |
-| cross      | (1) () -- () (1) | Pops the top element and pushes it to the secondary stack. |
-| back     | () (1) -- (1) ()  | Pops the top element of the second stack and pushes it to stack. |
-| + | (1 2) -- (3)  | Pops the top two elements and pushes the sum. |
-| - | (1 2) -- (-1)  | Pops the top two elements and pushes the difference. |
-| * | (1 2) -- (2)  | Pops the top two elements and pushes the product. |
-| / | (1 2) -- (0)  | Pops the top two elements and pushes the quotient. |
-| mod | (1 2) -- (1) | Pops the top two elements and pushes the remainder. |
-| >     | (1 2) -- (0)  | Compares if the second element is greater than the top element. |
-| < | (1 2) -- (1) | Compares if the second element is less than the top element. |
-| if | (1) -- () | If the top is non-zero, continue execution at the next word. |
+| dup      | ( 1 -- 1 1 ) | Duplicates the top element. |
+| drop     | ( 1 -- )  | Pops the top element. |
+| swap | ( 1 2 -- 2 1 )    | Swaps the top two elements. |
+| over      | ( 1 2 -- 1 2 1 ) | Duplicates the second element and puts it on top. |
+| rot     | ( 1 2 3 -- 2 3 1 )  | Rotates the top three elements. |
+| cross      | ( 1 , -- , 1 ) | Pops the top element and pushes it to the secondary stack. |
+| back     | ( , 1 -- 1 , )  | Pops the top element of the second stack and pushes it to stack. |
+| + | ( 1 2 -- 3 )  | Pops the top two elements and pushes the sum. |
+| - | ( 1 2 -- -1 )  | Pops the top two elements and pushes the difference. |
+| * | ( 1 2 -- 2 )  | Pops the top two elements and pushes the product. |
+| / | (1 2 -- 0 )  | Pops the top two elements and pushes the quotient. |
+| mod | ( 1 2 -- 1 ) | Pops the top two elements and pushes the remainder. |
+| >     | ( 1 2 -- 0 )  | Compares if the second element is greater than the top element. |
+| < | ( 1 2 -- 1 ) | Compares if the second element is less than the top element. |
+| if | ( 1 -- ) | If the top is non-zero, continue execution at the next word. |
 | else | no effect | Optional after an `If`, continue executing if the `If` was false.  |
 | then | no effect | Ends an if/if-else block. |
 | : | no effect | Start of a word definition. The next token is the name followed by the body. |
 | ; | no effect | End of a word definition. |
 | @ | no effect | Label definition. The next token is the name. |
-| . | (1) -- () | Prints the top. |
-| emit | (1) -- () | Prints the top as an ASCII character. |
-| key | () -- (1) | Gets keyboard input and pushes the ASCII value. |
+| . | ( 1 -- ) | Prints the top. |
+| emit | ( 1 -- ) | Prints the top as an ASCII character. |
+| key | ( -- 1 ) | Gets keyboard input and pushes the ASCII value. |
