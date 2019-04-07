@@ -52,8 +52,11 @@ func main() {
 
 	// REPL
 	for {
-		// Read.
+		// Print.
+		fmt.Print(env.stack, env.auxStack)
 		fmt.Print(" > ")
+
+		// Read.
 		text, _ := reader.ReadString('\n')
 		text = strings.TrimSpace(text)
 
@@ -62,9 +65,6 @@ func main() {
 			return
 		}
 		eval(&env, text)
-
-		// print
-		fmt.Print(env.stack)
 	}
 }
 
@@ -130,7 +130,7 @@ func eval(env *environment, code string) {
 			}
 			op1 := env.pop()
 			op2 := env.pop()
-			if op2 == 0 {
+			if op1 == 0 {
 				error("Divide by zero.")
 				return
 			}
@@ -142,7 +142,7 @@ func eval(env *environment, code string) {
 			}
 			op1 := env.pop()
 			op2 := env.pop()
-			if op2 == 0 {
+			if op1 == 0 {
 				error("Divide by zero.")
 				return
 			}
