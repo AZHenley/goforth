@@ -341,7 +341,14 @@ func eval(env *environment, code string) {
 				return
 			}
 			env.push(int(char))
-		//TODO: Handle comments.
+		case "(":
+			// Skips comments. Does not support nested comments.
+			for l.next() != ")" {
+				if l.EOF {
+					error("Unexpected EOF.")
+					return
+				}
+			}
 		default:
 			// Test to see if token is a number.
 			i, err := strconv.Atoi(l.token)
