@@ -26,7 +26,7 @@ back back ;
 
 ---
 
-Similar to Forth, this is a stack-based language with space-separated commands called _words_. Most words manipulate the stack in some way. An integer is pushed to the top of the stack. Running `1 2 +` will push `3` to the stack.
+Based on the Forth programming language, this is a stack-based language with space-separated commands called _words_. Most words manipulate the stack in some way. An integer is pushed to the top of the stack. Running `1 2 +` will push `3` to the stack.
 
 This dialect only supports integer values and does not have variables. Instead it has a second stack that you can push and pop from (using `cross` and `back`). Additionally, it supports labels and goto rather than loops. For comparisons, zero evaluates to false and any non-zero value evaluates to true. Referencing a label pushes an integer on the top of the stack where execution will continue. Words and labels must be unique. Comments beging with `(` and end with `)` with a space before and after each.
 
