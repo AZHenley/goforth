@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -72,7 +73,164 @@ func eval(env *environment, code string) {
 	tokens := strings.Fields(code)
 	for _, token := range tokens {
 		switch token {
+		// Arithmetic.
+		case "+":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			env.push(op1 + op2)
+		case "-":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			env.push(op1 - op2)
+		case "*":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			env.push(op1 * op2)
+		case "/":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			if op2 == 0 {
+				error("Divide by zero.")
+				return
+			}
+			env.push(op1 + op2)
+		case "mod":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			if op2 == 0 {
+				error("Divide by zero.")
+				return
+			}
+			env.push(op1 + op2)
+		// Stack manipulation.
+		case "dup":
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			env.push(env.top())
+		case "drop":
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			env.pop()
+		case "swap":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			env.push(op1)
+			env.push(op2)
+		case "rot":
+			if len(env.stack) < 3 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.pop()
+			op2 := env.pop()
+			op3 := env.pop()
+			env.push(op2)
+			env.push(op1)
+			env.push(op3)
+		case "over":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			env.push(env.get(1))
+		// Aux stack.
+		case "cross": // Moves top of the stack over to a secondary stack.
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			env.pushAux(env.pop())
+		case "back": // Moves top of the secondary stack over to the stack.
+			if len(env.auxStack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			env.push(env.popAux())
+		// Comparison.
+		case "=":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.get(1)
+			op2 := env.top()
+			if op1 == op2 {
+				env.push(1)
+			} else {
+				env.push(0)
+			}
+		case "<":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.get(1)
+			op2 := env.top()
+			if op1 < op2 {
+				env.push(1)
+			} else {
+				env.push(0)
+			}
+		case ">":
+			if len(env.stack) < 2 {
+				error("Stack underflow.")
+				return
+			}
+			op1 := env.get(1)
+			op2 := env.top()
+			if op1 > op2 {
+				env.push(1)
+			} else {
+				env.push(0)
+			}
+		// Control flow.
+		case "if":
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+		case "else":
+		case "then":
+		case ":":
+		case ";":
+		case "@": // Starts a label.
+		case "goto":
 
+		default:
+			i, err := strconv.Atoi(token)
+			if err != nil {
+				error("Invalid word: " + token)
+				return
+			}
+			env.push(i)
 		}
 	}
 }
