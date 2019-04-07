@@ -7,7 +7,7 @@ Fibonacci sequence:
 : fib over over + ;  (duplicates top two values and adds them)
 ```
 
-Count from 10:
+Count down from 10:
 ```
 10 @ foo  (start at 10 and define label)
 dup . 10 emit  (print current value and newline)
