@@ -24,13 +24,6 @@ This dialect only supports integer values and does not have variables. Instead i
 
 The table below describes all of the built-in words. The stacks are shown bottom to top (i.e., the right most element is the top).
 
-dup drop rot swap over
-+ - * / mod
-> < =
-if else then goto : ; @
-key . emit
-cross back
-
 | Word       | Stack effect          | Description |
 | ------------- |:-------------:| -----:|
 | dup      | (1) -- (1 1) | Duplicates the top element. |
