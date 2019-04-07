@@ -70,8 +70,33 @@ func main() {
 
 // TODO: Error handling causes a lot of duplicate code. Unsure how to fix without exceptions.
 func eval(env *environment, code string) {
+	skipIf := 0            // Keep track of nested If count
+	skipElse := 0          // Keep track of nested Else count
+	expectingThen := false // Inside an If
 	tokens := strings.Fields(code)
 	for _, token := range tokens {
+
+		// Based on previous if, skip until...
+		// TODO: Refactor this.
+		if skipIf > 0 {
+			if token == "if" {
+				skipIf++
+			} else if token == "else" && skipIf == 1 {
+				skipIf = 0
+			} else if token == "then" {
+				skipIf--
+			}
+			continue
+		}
+		if skipElse > 0 {
+			if token == "if" {
+				skipElse++
+			} else if token == "then" {
+				skipElse--
+			}
+			continue
+		}
+
 		switch token {
 		// Arithmetic.
 		case "+":
@@ -217,8 +242,23 @@ func eval(env *environment, code string) {
 				error("Stack underflow.")
 				return
 			}
+			op1 := env.pop()
+			if op1 != 0 {
+				//skipElse = 1
+			}
+			if op1 == 0 {
+				skipIf = 1
+			}
+			expectingThen = true
 		case "else":
+			// Must have already executed If, so skip Else.
+			skipElse = 1
 		case "then":
+			if !expectingThen {
+				error("Unexpected then.")
+				return
+			}
+			expectingThen = false
 		case ":":
 		case ";":
 		case "@": // Starts a label.
