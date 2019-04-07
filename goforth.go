@@ -16,6 +16,8 @@ type environment struct {
 }
 
 func (env *environment) push(i int) {
+	if i == 0 {
+	}
 	env.stack = append(env.stack, i)
 }
 
@@ -50,6 +52,8 @@ func main() {
 	fmt.Println("Goforth.")
 	reader := bufio.NewReader(os.Stdin)
 	var env environment
+	env.words = map[string][]string{}
+	env.labels = map[string]int{}
 
 	// REPL
 	for {
@@ -286,7 +290,7 @@ func eval(env *environment, code string) {
 			name := l.next()
 			// TODO: Check for name clash?
 			var code []string
-			for l.next() == ";" {
+			for l.next() != ";" {
 				if l.EOF {
 					error("Unexpected EOF.")
 					return
@@ -323,8 +327,10 @@ func eval(env *environment, code string) {
 					error("Invalid word: " + l.token)
 					return
 				}
+			} else {
+				// It is a number.
+				env.push(i)
 			}
-			env.push(i)
 		}
 	}
 }
