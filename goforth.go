@@ -309,6 +309,7 @@ func eval(env *environment, code string) {
 			}
 			env.labels[name] = l.pos
 		case "goto":
+			// TODO: This won't work in REPL mode. Would need to keep track of all input code.
 			op1 := env.pop()
 			if op1 < 0 || op1 > len(l.tokens)-1 {
 				error("Invalid goto.")
