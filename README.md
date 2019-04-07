@@ -4,7 +4,15 @@ An interpreter for a small dialect of Forth written in Go.
 
 Fibonacci sequence:
 ```
-: fib over over + ;
+: fib over over + ;  (duplicates top two values and adds them)
+```
+
+Count from 10:
+```
+10 @ foo  (start at 10 and define label)
+dup . 10 emit  (print current value and newline)
+1 - dup if  (subtract 1 and check if not zero)
+goto then  (loop)
 ```
 
 Duplicate the top 4 elements of the stack:
