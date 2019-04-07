@@ -62,4 +62,4 @@ The table below describes all of the built-in words. The stacks are shown bottom
 
 ## What is the point?
 
-Just exploring how Forth works. It isn't any optimal implementation in any way.
+Just exploring how Forth works. It isn't an optimal implementation in any way.
