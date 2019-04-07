@@ -316,6 +316,26 @@ func eval(env *environment, code string) {
 			}
 			l.pos = op1
 			l.token = l.tokens[l.pos]
+		case ".":
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			fmt.Print(env.pop())
+		case "emit": // Print as ASCII.
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
+			fmt.Print(string(env.pop()))
+		case "key":
+			reader := bufio.NewReader(os.Stdin)
+			char, _, err := reader.ReadRune()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			env.push(int(char))
 		default:
 			// Test to see if token is a number.
 			i, err := strconv.Atoi(l.token)
