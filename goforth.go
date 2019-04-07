@@ -11,7 +11,8 @@ import (
 type environment struct {
 	stack    []int
 	auxStack []int
-	words    map[string]string
+	words    map[string][]string
+	labels   map[string]int
 }
 
 func (env *environment) push(i int) {
@@ -68,36 +69,56 @@ func main() {
 	}
 }
 
+type lexer struct {
+	tokens []string
+	token  string
+	pos    int
+	EOF    bool
+}
+
+func (l *lexer) next() string {
+	if l.pos < len(l.tokens) {
+		l.token = l.tokens[l.pos]
+		l.pos++
+		return l.token
+	}
+	l.EOF = true
+	return ""
+}
+
 // TODO: Error handling causes a lot of duplicate code. Unsure how to fix without exceptions.
 func eval(env *environment, code string) {
+	var l lexer
+	l.tokens = strings.Fields(code)
 	skipIf := 0            // Keep track of nested If count
 	skipElse := 0          // Keep track of nested Else count
 	expectingThen := false // Inside an If
-	tokens := strings.Fields(code)
-	for _, token := range tokens {
 
-		// Based on previous if, skip until...
-		// TODO: Refactor this.
+	for l.next() != "" {
+
+		// Given a previous if, skip until...
+		// TODO: Refactor this. Move logic inside switch to If case.
 		if skipIf > 0 {
-			if token == "if" {
+			if l.token == "if" {
 				skipIf++
-			} else if token == "else" && skipIf == 1 {
+			} else if l.token == "else" && skipIf == 1 {
 				skipIf = 0
-			} else if token == "then" {
+			} else if l.token == "then" {
 				skipIf--
 			}
 			continue
 		}
 		if skipElse > 0 {
-			if token == "if" {
+			if l.token == "if" {
 				skipElse++
-			} else if token == "then" {
+			} else if l.token == "then" {
 				skipElse--
 			}
 			continue
 		}
 
-		switch token {
+		// Main logic for processing words.
+		switch l.token {
 		// Arithmetic.
 		case "+":
 			if len(env.stack) < 2 {
@@ -260,15 +281,48 @@ func eval(env *environment, code string) {
 			}
 			expectingThen = false
 		case ":":
+			// Next token has to be identifier.
+			// Loop until ; or EOF. If EOF then throw error.
+			name := l.next()
+			// TODO: Check for name clash?
+			var code []string
+			for l.next() == ";" {
+				if l.EOF {
+					error("Unexpected EOF.")
+					return
+				}
+				code = append(code, l.token)
+			}
+			env.words[name] = code
 		case ";":
+			error("Unexpected ;.")
+			return
 		case "@": // Starts a label.
-		case "goto":
-
-		default:
-			i, err := strconv.Atoi(token)
-			if err != nil {
-				error("Invalid word: " + token)
+			name := l.next()
+			if l.EOF {
+				error("Unexpected EOF.")
 				return
+			}
+			env.labels[name] = l.pos
+		case "goto":
+			op1 := env.pop()
+			if op1 < 0 || op1 > len(l.tokens)-1 {
+				error("Invalid goto.")
+				return
+			}
+			l.pos = op1
+			l.token = l.tokens[l.pos]
+		default:
+			// Test to see if token is a number.
+			i, err := strconv.Atoi(l.token)
+			if err != nil {
+				// Check if word is user defined.
+				if code, ok := env.words[l.token]; ok {
+					eval(env, strings.Join(code, " ")) // Wasteful join.
+				} else {
+					error("Invalid word: " + l.token)
+					return
+				}
 			}
 			env.push(i)
 		}
