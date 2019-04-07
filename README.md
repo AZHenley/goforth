@@ -62,4 +62,4 @@ The table below describes all of the built-in words. The stacks are shown bottom
 
 ## What is the point?
 
-Just exploring how Forth works. The interpreter could be simplified and optimized.
+Just exploring how Forth works.
