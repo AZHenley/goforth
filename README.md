@@ -1,6 +1,6 @@
 # goforth
 
-An interpreter for a small dialect of Forth written in Go. Forth is a stack-based programming language that looks like this...
+An interpreter for a small dialect of Forth written in Go.
 
 Fibonacci sequence:
 ```
