@@ -49,7 +49,7 @@ func (env *environment) get(i int) int {
 }
 
 func main() {
-	fmt.Println("Goforth.")
+	fmt.Println("Goforth by Austin Henley.")
 	reader := bufio.NewReader(os.Stdin)
 	var env environment
 	env.words = map[string][]string{}
@@ -139,7 +139,7 @@ func eval(env *environment, code string) {
 			}
 			op1 := env.pop()
 			op2 := env.pop()
-			env.push(op1 - op2)
+			env.push(op2 - op1)
 		case "*":
 			if len(env.stack) < 2 {
 				error("Stack underflow.")
@@ -337,6 +337,7 @@ func eval(env *environment, code string) {
 				return
 			}
 			env.push(int(char))
+		//TODO: Handle comments.
 		default:
 			// Test to see if token is a number.
 			i, err := strconv.Atoi(l.token)
