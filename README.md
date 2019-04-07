@@ -57,3 +57,9 @@ The table below describes all of the built-in words. The stacks are shown bottom
 | . | ( 1 -- ) | Prints the top. |
 | emit | ( 1 -- ) | Prints the top as an ASCII character. |
 | key | ( -- 1 ) | Gets keyboard input and pushes the ASCII value. |
+
+---
+
+## What is the point?
+
+Just exploring how Forth works. The interpreter could be simplified and optimized.
