@@ -309,7 +309,11 @@ func eval(env *environment, code string) {
 			}
 			env.labels[name] = l.pos
 		case "goto":
-			// TODO: This won't work in REPL mode. Would need to keep track of all input code.
+			// This won't work in REPL mode. Would need to keep track of all input code.
+			if len(env.stack) < 1 {
+				error("Stack underflow.")
+				return
+			}
 			op1 := env.pop()
 			if op1 < 0 || op1 > len(l.tokens)-1 {
 				error("Invalid goto.")
@@ -345,6 +349,9 @@ func eval(env *environment, code string) {
 				// Check if word is user defined.
 				if code, ok := env.words[l.token]; ok {
 					eval(env, strings.Join(code, " ")) // Wasteful join.
+				} else if pos, ok := env.labels[l.token]; ok {
+					// This is a label.
+					env.push(pos)
 				} else {
 					error("Invalid word: " + l.token)
 					return
